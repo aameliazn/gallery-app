@@ -38,7 +38,7 @@
                         <a class="nav-link" href="#">Album</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link active" href=''>
+                        <a class="nav-link active" href='{{ route('photo.create') }}'>
                             <i class="bi bi-plus-circle h5"></i>
                         </a>
                     </li>
@@ -46,6 +46,39 @@
             </div>
         </div>
     </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Gallery Lists</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach ($photo as $img)
+                                <div class="col-md-2">
+                                    <div class="card border shadow p-2">
+                                        <img src="{{ asset($img->path) }}" style="height: 70px; width:70px;"
+                                            alt="Image">
+                                        <br>
+                                        <a href="{{ route('photo.destroy', $img->id) }}">Delete</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
