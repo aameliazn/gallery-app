@@ -60,4 +60,13 @@ class AuthController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Berhasil masuk');
     }
+
+    public function logoutAction(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/')->with('success', 'Berhasil keluar');
+    }
 }
