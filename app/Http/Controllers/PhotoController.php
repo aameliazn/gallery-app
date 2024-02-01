@@ -17,9 +17,15 @@ class PhotoController extends Controller
      */
     public function index()
     {
-        $Photo = Photo::get();
+        $user = Auth::user();
+        $photos = Photo::with('favorites')->get();
+
+        $photos->each(function ($photo) use ($user) {
+            $photo->isFavorited = $photo->isFavoritedByUser($user);
+        });
+
         return view('dashboard', [
-            'photo' => $Photo
+            'photos' => $photos,
         ]);
     }
 

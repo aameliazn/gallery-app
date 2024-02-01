@@ -63,13 +63,24 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            @foreach ($photo as $img)
+                            @foreach ($photos as $photo)
                                 <div class="col-md-2">
                                     <div class="card border shadow p-2">
-                                        <img src="{{ asset($img->path) }}" style="height: 70px; width:70px;"
+                                        <img src="{{ asset($photo->path) }}" style="height: 70px; width:70px;"
                                             alt="Image">
                                         <br>
-                                        <a href="{{ route('photo.destroy', $img->id) }}">Delete</a>
+                                        <a href="{{ route('photo.destroy', $photo->id) }}">Delete</a>
+                                        <form
+                                            action="{{ $photo->isFavorited ? route('favorites.destroy', ['favorite' => $photo->favorites->first()]) : route('favorites.store') }}"
+                                            method="post">
+                                            @csrf
+                                            @if ($photo->isFavorited)
+                                                @method('DELETE')
+                                            @endif
+                                            <input type="hidden" name="photoId" value="{{ $photo->id }}">
+                                            <button
+                                                type="submit">{{ $photo->isFavorited ? 'Favorite' : 'Unfavorite' }}</button>
+                                        </form>
                                     </div>
                                 </div>
                             @endforeach

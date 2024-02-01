@@ -2,20 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Photo;
 use App\Models\User;
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Album extends Model
+class Favorite extends Model
 {
     use HasFactory;
 
-    protected $table = 'albums';
+    protected $table = 'favorites';
 
     protected $fillable = [
-        'name',
-        'desc',
+        'photoId',
         'userId',
     ];
 
@@ -26,6 +25,6 @@ class Album extends Model
 
     public function photo()
     {
-        return $this->hasMany(Photo::class, 'albumId');
+        return $this->belongsTo(Photo::class, 'photoId');
     }
 }

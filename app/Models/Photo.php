@@ -21,13 +21,23 @@ class Photo extends Model
         'userId',
     ];
 
-    public function albums()
+    public function album()
     {
         return $this->belongsTo(Album::class, 'albumId');
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class, 'userId');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'photoId', 'id');
+    }
+
+    public function isFavoritedByUser(User $user)
+    {
+        return $this->favorites->where('userId', $user->id)->count() > 0;
     }
 }
