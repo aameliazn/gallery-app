@@ -64,7 +64,7 @@
                             <input type="text" class="form-control" id="newAlbumName" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="newAlbumDesc" class="form-label">Album Name</label>
+                            <label for="newAlbumDesc" class="form-label">Album Description</label>
                             <textarea class="form-control" id="newAlbumDesc" name="desc" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-secondary">Create Album</button>

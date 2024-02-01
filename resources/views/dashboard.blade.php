@@ -79,7 +79,7 @@
                                             @endif
                                             <input type="hidden" name="photoId" value="{{ $photo->id }}">
                                             <button
-                                                type="submit">{{ $photo->isFavorited ? 'Favorite' : 'Unfavorite' }}</button>
+                                                type="submit">{{ $photo->isFavorited ? 'Unfavorite' : 'Favorite' }}</button>
                                         </form>
                                     </div>
                                 </div>
