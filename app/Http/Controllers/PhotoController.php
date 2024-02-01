@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use App\Models\Photo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class PhotoController extends Controller
 {
@@ -26,7 +28,8 @@ class PhotoController extends Controller
      */
     public function create()
     {
-        return view('photo.create');
+        $album = Album::get();
+        return view('photo.create', compact('album'));
     }
 
     /**
@@ -34,29 +37,45 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('file')) {
+        $validator = Validator::make($request->all(), [
+            'file' => 'image',
+            'desc' => 'required'
+        ]);
 
-            $uploadPath = "uploads/gallery/";
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 400);
+        }
 
-            $file = $request->file('file');
+        $file = $request->file('file');
 
-            $extention = $file->getClientOriginalExtension();
-            $filename = time() . '-' . rand(0, 99) . '.' . $extention;
+        if (!$file) {
+            return redirect()->route('dashboard')->with('success', 'gambar berhasil');
+        }
 
-            $file->move($uploadPath, $filename);
+        if (!$file->isValid()) {
+            return redirect()->route('dashboard')->with('success', 'gambar berhasil');
+        }
 
-            $path = $uploadPath . $filename;
+        $extension = $file->getClientOriginalExtension();
+        $filename = time() . '-' . rand(0, 99) . '.' . $extension;
 
-            Photo::create([
-                'name' => $filename,
-                'desc' => $request->desc,
-                'path' => $path,
-                'userId' => Auth::user()->id,
-            ]);
+        $uploadPath = "uploads/gallery/";
+        $path = $uploadPath . $filename;
 
-            return response()->json(['success' => 'Image Uploaded Successfully']);
+        $file->move($uploadPath, $filename);
+
+        $uploadSuccess = Photo::create([
+            'name' => $filename,
+            'desc' => $request->desc,
+            'path' => $path,
+            'userId' => Auth::user()->id,
+            'albumId' => $request->albumId,
+        ]);
+
+        if ($uploadSuccess) {
+            return redirect()->route('dashboard')->with('success', 'gambar berhasil');
         } else {
-            return response()->json(['error' => 'File upload failed.']);
+            return redirect()->route('dashboard')->with('failed', 'gambar gagal');
         }
     }
 

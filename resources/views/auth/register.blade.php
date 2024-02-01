@@ -47,9 +47,8 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <input name="address" type="text"
-                                        class="form-control form-control-user @error('address')is-invalid @enderror"
-                                        id="exampleInputAddress" placeholder="Input Address">
+                                    <textarea name="address" class="form-control form-control-user @error('address')is-invalid @enderror"
+                                        id="exampleInputAddress" placeholder="Input Address"></textarea>
                                     @error('address')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
