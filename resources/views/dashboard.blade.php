@@ -56,6 +56,11 @@
                         {{ session('success') }}
                     </div>
                 @endif
+                @if (session('error'))
+                    <div class="alert alert-warning">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
                 <div class="card">
                     <div class="card-header">
@@ -81,6 +86,22 @@
                                             <button
                                                 type="submit">{{ $photo->isFavorited ? 'Unfavorite' : 'Favorite' }}</button>
                                         </form>
+                                        <div>
+                                            <h4>Comments</h4>
+                                            @if ($photo->comments)
+                                                @foreach ($photo->comments as $comment)
+                                                    <p>{{ $comment->user->name }}: {{ $comment->content }}</p>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                        @auth
+                                            <form action="{{ route('comments.store') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="photoId" value="{{ $photo->id }}">
+                                                <textarea name="content" placeholder="Add a comment"></textarea>
+                                                <button type="submit">Post Comment</button>
+                                            </form>
+                                        @endauth
                                     </div>
                                 </div>
                             @endforeach

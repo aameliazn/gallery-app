@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PhotoController;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::post('album/create', 'store')->name('album.store');
     });
 
-    Route::controller(FavoriteController::class)->group(function () {
-        Route::resource('favorites', FavoriteController::class)->only(['store', 'destroy']);
-    });
+    Route::resource('favorites', FavoriteController::class)->only(['store', 'destroy']);
+
+    Route::resource('comments', CommentController::class)->only(['store', 'destroy']);
 });

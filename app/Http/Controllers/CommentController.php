@@ -29,7 +29,22 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'content' => 'required',
+                'photoId' => 'required|exists:photos,id',
+            ]);
+
+            $comment = new Comment();
+            $comment->content = $request->content;
+            $comment->userId = auth()->id();
+            $comment->photoId = $request->photoId;
+            $comment->save();
+
+            return back()->with('success', 'Comment added successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error adding comment: ' . $e->getMessage());
+        }
     }
 
     /**

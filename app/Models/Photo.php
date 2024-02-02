@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Album;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,5 +40,10 @@ class Photo extends Model
     public function isFavoritedByUser(User $user)
     {
         return $this->favorites->where('userId', $user->id)->count() > 0;
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'photoId');
     }
 }
